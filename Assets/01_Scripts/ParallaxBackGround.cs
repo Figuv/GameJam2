@@ -5,6 +5,7 @@ using UnityEngine;
 public class ParallaxBackGround : MonoBehaviour
 {
     private Vector2 posInicio;
+    public float speed = 5f;
     // Start is called before the first frame update
     void Start()
     {
