@@ -8,6 +8,7 @@ public class Spawner : MonoBehaviour
     public GameObject flat;
     public GameObject tall;
     public GameObject diag;
+    public GameObject mas;
     public float flatHeight;
     public float tallHeight;
 
@@ -16,13 +17,13 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        spawnTime = 5.0f;
-        initialWait = 5.0f;
+        spawnTime = 4.0f;
+        initialWait = 4.0f;
     }
 
     private void Update()
     {
-        byte rand = (byte)UnityEngine.Random.Range(0, 3);
+        byte rand = (byte)UnityEngine.Random.Range(0, 4);
         spawnTime -= Time.deltaTime;
         initialWait -= Time.deltaTime;
         if (spawnTime <= 0 && initialWait <= 0)
@@ -30,36 +31,45 @@ public class Spawner : MonoBehaviour
             switch (rand)
             {
                 case 0:
-                    Invoke("spawnTall", UnityEngine.Random.Range(0.75f, 2));
+                    Invoke("spawnTall", 0f);
                     break;
                 case 1:
-                    Invoke("spawnFlat", UnityEngine.Random.Range(0, 1));
+                    Invoke("spawnFlat", 0f);
                     break;
                 case 2:
-                    Invoke("spawnDiagonal", UnityEngine.Random.Range(1, 3));
+                    Invoke("spawnDiagonal", 0f);
+                    break;
+                case 3:
+                    Invoke("spawnMasista", 0f);
                     break;
             }
-            spawnTime = 5.0f;
+            spawnTime = 4.0f;
         }
     }
 
     void spawnFlat()
     {
             GameObject go = Instantiate(flat, transform.position, Quaternion.identity);
-            go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-flatHeight, flatHeight), transform.position.z);
+            go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-4.3f, flatHeight), transform.position.z);
             Destroy(go, 20.0f);
     }
     void spawnTall()
     {
             GameObject go = Instantiate(tall, transform.position, Quaternion.identity);
-            go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-tallHeight, tallHeight), transform.position.z);
+            go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-1.6f, tallHeight), transform.position.z);
             Destroy(go, 20.0f);
     }
     void spawnDiagonal()
     {
         Quaternion rotacion = Quaternion.Euler(0, 0, 45);
         GameObject go = Instantiate(diag, transform.position, rotacion);
-        go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-tallHeight, tallHeight), transform.position.z);
+        go.transform.position = new Vector3(transform.position.x, UnityEngine.Random.Range(-1.6f, tallHeight), transform.position.z);
+        Destroy(go, 20.0f);
+    }
+    void spawnMasista()
+    {
+        GameObject go = Instantiate(mas, transform.position, Quaternion.identity);
+        go.transform.position = new Vector3(transform.position.x, -3.99f, transform.position.z);
         Destroy(go, 20.0f);
     }
 }
