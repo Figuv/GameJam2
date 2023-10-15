@@ -5,12 +5,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
-    public float speed = 10f;
-    public float distance = 0;
-    public float multiplier = 1.005f;
+    float speed = 5f;
+    float distance = 0;
+    public float backgroundSpeed = 2f;
+    float multiplier = 1.05f;
+    float timeToIncrease = 1f;
+    float timer = 0f;
 
-    public float timeToIncrease = 1f;
-    public float timer = 0f;
+    public float energy = 90f;
+    public bool isGrounded = false;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,20 +31,49 @@ public class Player : MonoBehaviour
 
     void Movement()
     {
-        //quiero que cuando se mantenga presionada la tecla space, el jugador se mantenga en el aire
         if (Input.GetKey(KeyCode.Space))
         {
-            rb.velocity = Vector2.up * speed;
+            if (isGrounded)
+            {
+                rb.AddForce(Vector2.up * 220f, ForceMode2D.Impulse);
+                isGrounded = false;
+            }
+            else
+            {
+                if (energy < 100)
+                {
+                    rb.velocity = Vector2.up * speed;
+                    energy += 0.07f;
+                }
+            }
+        }
+    }
+
+    void consumeEnergy(float energy)
+    {
+        this.energy -= energy;
+        if (this.energy < 0)
+        {
+            this.energy = 0;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "ground")
+        {
+            isGrounded = true;
         }
     }
 
     void UpdateDistance()
     {
-        Debug.Log(distance);
         timer += Time.deltaTime;
         if (timer >= timeToIncrease)
         {
-            distance = distance*multiplier + 1;
+            distance = distance * multiplier + 1;
+            backgroundSpeed = backgroundSpeed * multiplier;
+            speed = speed * multiplier;
             timer = 0f;
         }
     }
