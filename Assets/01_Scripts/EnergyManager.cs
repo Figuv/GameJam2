@@ -8,6 +8,8 @@ public class EnergyManager : MonoBehaviour
     public Image energyBar;
     float energyAmount;
     public Player player;
+    public Text distanceText;
+    public float distance;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +21,9 @@ public class EnergyManager : MonoBehaviour
     {
         energyAmount = player.energy;
         energyBar.fillAmount = energyAmount/100f;
+        distance = player.distance / 10f;
+        distanceText.text = distance.ToString() + "m";
+
     }
 
     public void consumeEnergy(float energy){

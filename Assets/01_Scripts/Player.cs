@@ -5,21 +5,23 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public Rigidbody2D rb;
-    float speed = 5f;
-    float distance = 0;
-    public float backgroundSpeed = 2f;
-    float multiplier = 1.05f;
-    float timeToIncrease = 1f;
-    float timer = 0f;
-
+    public float speed = 5f;
     public float energy = 90f;
     public bool isGrounded = false;
-
+    public float distance = 0f;
+    public float backgroundSpeed = 2f;
+    
+    private float jumpForce = 220f;
+    private float maxEnergy = 100f;
+    private float energyRegenRate = 0.07f;
+    private float multiplier = 1.03f;
+    private float timeToIncrease = 1f;
+    private float timer = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        distance = 0f;
     }
 
     // Update is called once per frame
@@ -35,15 +37,15 @@ public class Player : MonoBehaviour
         {
             if (isGrounded)
             {
-                rb.AddForce(Vector2.up * 220f, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
                 isGrounded = false;
             }
             else
             {
-                if (energy < 100)
+                if (energy < maxEnergy)
                 {
                     rb.velocity = Vector2.up * speed;
-                    energy += 0.07f;
+                    energy += energyRegenRate;
                 }
             }
         }
@@ -71,7 +73,7 @@ public class Player : MonoBehaviour
         timer += Time.deltaTime;
         if (timer >= timeToIncrease)
         {
-            distance = distance * multiplier + 1;
+            distance += speed * timer;
             backgroundSpeed = backgroundSpeed * multiplier;
             speed = speed * multiplier;
             timer = 0f;
